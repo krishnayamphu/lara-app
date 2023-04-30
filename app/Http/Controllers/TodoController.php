@@ -28,10 +28,13 @@ class TodoController extends Controller
      */
     public function store(Request $request)
     {
+        $validated = $request->validate([
+            'items' => 'required|unique:todo|max:255'
+        ]);
         $todo = new Todo();
-        $todo->items = $request->input('item');
+        $todo->items = $request->input('items');
         $todo->save();
-        echo "data inserted";
+        return redirect()->route('todo.index');
     }
 
     /**
@@ -64,7 +67,9 @@ class TodoController extends Controller
     public function destroy(string $id)
     {
         $todo = Todo::where('id',$id);
-        $todo->delete();
+        if($todo->delete()){
+            session()->flash('status', 'Item Deleted');
+        }
         return redirect()->route('todo.index');
     }
 }
