@@ -50,7 +50,8 @@ class TodoController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $todos =Todo::where('id', $id)->get();
+        return view('todo.edit',['todos'=>$todos]);
     }
 
     /**
@@ -58,7 +59,12 @@ class TodoController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $todo = Todo::find($id);
+        $todo->status=$request->status;
+        if($todo->save()) {
+            session()->flash('status', 'Todo  Updated');
+        }
+        return redirect()->route('todo.index');
     }
 
     /**

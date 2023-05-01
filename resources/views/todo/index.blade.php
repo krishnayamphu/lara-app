@@ -34,11 +34,11 @@
                 <tbody>
                 @foreach ($todos as $todo)
                     <tr>
-                        <th scope="row"><input type="checkbox"></th>
+                        <th scope="row"><input type="checkbox" {{$todo->status==1?'checked':''}}></th>
                         <td>{{ $todo->items }}</td>
                         <td>
                             <div class="d-flex">
-                            <a class="btn btn-primary me-2" href="">Edit</a>
+                            <a class="btn btn-primary me-2" href="{{ route('todo.edit', $todo->id) }}">Edit</a>
                             <form action="{{route('todo.destroy',$todo->id)}}" method="post">
                                 @csrf
                                 {{ method_field('DELETE') }}
